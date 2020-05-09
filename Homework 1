@@ -1,0 +1,181 @@
+package com.company;
+import java.util.Scanner;
+public class Main {
+    public static void main(String[] args) {
+        Main c= new Main();
+        c.privetstvie();
+    }
+
+    // 1 задание
+void  method_main(){
+    System.out.println("public static void main(String[] args) {}");
+}
+
+    // 2 задание
+void type(){
+    byte b=5;
+    short sh=34;
+    int i=356;
+    long l=43_532;
+    float f=12.8F;
+    double d=66.9;
+    char c1= 0076;
+    char c2= 'v';
+    boolean bool=true;
+    String s="Привет!";
+
+    System.out.println("byte "+b);
+    System.out.println("short "+sh);
+    System.out.println("int "+i);
+    System.out.println("long "+l);
+    System.out.println("float "+f);
+    System.out.println("double "+d);
+    System.out.println("char 1 "+c1);
+    System.out.println("char 2 "+c2);
+    System.out.println("boolean "+bool);
+    System.out.println("String "+s);
+}
+
+    // 3 задание
+double viragenie(int a, int b, int c, int d){
+    return (double)a * ((double)b + ((double)c / (double)d));
+}
+
+    // 4 задание
+boolean proverka_summi(int a, int b){
+    int summ=a+b;
+    return (summ<21 && summ>9);
+}
+
+    // 5 задание
+void pologitelnoe_ili_otricatelnoe(int chislo){
+    if (chislo<0){
+        System.out.println(chislo +" отрицательное");
+    }
+    else {
+        System.out.println(chislo +" полжительное");
+    }
+}
+    // 6 задание
+boolean znak_chisla(int znak){
+    return (znak<0);
+}
+
+    // 7 задание
+void privet_imya(String imya){
+    System.out.println("Привет, "+imya+"!");
+}
+
+    // 8 задание
+void visokosnyi_god(int god){
+   if (god%400!=0) {
+       if (god % 4 != 0 || god % 100 == 0) {
+           System.out.println(god + " год не високосный");
+       }
+       else {
+           System.out.println(god + " год високосный");
+       }
+   }
+       else {
+           System.out.println(god+" год високосный");
+       }
+    System.out.println("____________________________________________");
+}
+
+    // Приветствие
+void privetstvie() {
+    Main c= new Main();
+    //Выводим список заданий на экран
+    System.out.println("Введите номер задания от 1 до 8 для проверки");
+    System.out.println("------------------------------------------------------------------------------------------------------------------------------------");
+    System.out.println("1. Создать пустой проект в IntelliJ IDEA и прописать метод main();");
+    System.out.println();
+    System.out.println("2. Создать переменные всех пройденных типов данных, и инициализировать их значения;");
+    System.out.println();
+    System.out.println("3. Написать метод вычисляющий выражение a * (b + (c / d)) и возвращающий результат, где a, b, c, d – входные параметры этого метода;");
+    System.out.println();
+    System.out.println("4. Написать метод, принимающий на вход два числа, и проверяющий что их сумма лежит в пределах от 10 до 20(включительно),");
+    System.out.println("   если да – true, в противном случае – false;");
+    System.out.println();
+    System.out.println("5. Написать метод, которому в качестве параметра передается целое число, метод должен напечатать в консоль положительное ли число");
+    System.out.println("   передали, или отрицательное; Замечание: ноль считаем положительным числом.");
+    System.out.println();
+    System.out.println("6. Написать метод, которому в качестве параметра передается целое число, метод должен вернуть true, если число отрицательное;");
+    System.out.println();
+    System.out.println("7. Написать метод, которому в качестве параметра передается строка, обозначающая имя, метод должен вывести в консоль сообщение");
+    System.out.println("   «Привет, указанное_имя!»;");
+    System.out.println();
+    System.out.println("8. * Написать метод, который определяет является ли год високосным, и выводит сообщение в консоль. Каждый 4-й год является високосным,");
+    System.out.println("   кроме каждого 100-го, при этом каждый 400-й – високосный.");
+    System.out.println();
+    c.vibor();
+}
+    // Метод выбора задания от 1 до 8
+void vibor(){
+    Main c= new Main();
+    switch(c.vvod_s_klaviaturiI()) {
+        case 1:
+            System.out.println("Вывод на экран пустого метода main");
+            c.method_main();
+            break;
+        case 2:
+            System.out.println("Список изученных инициализированных и объявленных переменных");
+            c.type();
+            break;
+        case 3:
+            System.out.println("Введите поочерёдно значения чисел a,b,c,d...");
+            System.out.println("Значение выражения a * (b + (c / d))= "+c.viragenie(c.vvod_s_klaviaturiI(),c.vvod_s_klaviaturiI(),c.vvod_s_klaviaturiI(),c.vvod_s_klaviaturiI()));
+            break;
+        case 4:
+            System.out.println("Введите два целых числа...");
+            System.out.println("Значение boolean "+c.proverka_summi(c.vvod_s_klaviaturiI(),c.vvod_s_klaviaturiI()));
+            break;
+        case 5:
+            System.out.println("Введите целое число...");
+            c.pologitelnoe_ili_otricatelnoe(c.vvod_s_klaviaturiI());
+            break;
+        case 6:
+            System.out.println("Введите целое число...");
+            System.out.println("Значение boolean "+c.znak_chisla(c.vvod_s_klaviaturiI()));
+            break;
+        case 7:
+            System.out.println("Введите имя...");
+            c.privet_imya(c.vvod_s_klaviaturiS());
+            break;
+        case 8:
+            System.out.println("Определение високосности года");
+            System.out.println("Введите год ...");
+            c.visokosnyi_god(c.vvod_s_klaviaturiI());
+            break;
+        default:
+            System.out.println("Вы ввели некорректное число!");
+            c.vibor();
+            break;
+    }
+    System.out.println("____________________________________________");
+    System.out.println("1 - для возврата в предыдущее меню");
+    System.out.println("0 - для завершения программы");
+    switch (c.vvod_s_klaviaturiI()){
+    case 0:
+        System.out.println("Хорошего вам дня!=)");
+        break;
+    case  1:
+        c.privetstvie();
+        break;
+    default:
+        System.out.println("Ты промахнулся!=)");
+        break;
+    }
+    }
+
+    // Метод ввода с клавиатуры целых чисел
+    int vvod_s_klaviaturiI(){
+    Scanner scan = new Scanner(System.in);
+    return scan.nextInt();
+    }
+    // Метод ввода с клавиатуры текста
+    String vvod_s_klaviaturiS(){
+        Scanner scan = new Scanner(System.in);
+        return scan.nextLine();
+    }
+}
