@@ -1,0 +1,160 @@
+package com.company;
+public class Main {
+    public static void main(String[] args) {
+        Main task=new Main();
+        task.doTask1();
+        task.doTask2();
+        task.doTask3();
+        task.doTask4();
+        task.doTask5();
+        task.doTask6();
+        task.doTask7();
+
+    }
+
+    void doTask1(){
+        System.out.println("1. Задать целочисленный массив, состоящий из элементов 0 и 1. С помощью цикла и условия заменить 0 на 1, 1 на 0");
+        System.out.println();
+        int [] array1={0,1,0,1,0,1,1,0,0};
+        for (int i:array1) {
+            System.out.print(i + " ");
+        }
+        System.out.println();
+        for (int i:array1) {
+            System.out.print((i==0?1:0)+ " ");
+        }
+        System.out.println();
+    }
+
+    void doTask2(){
+        System.out.println();
+        System.out.println("2. Задать пустой целочисленный массив размером 8. С помощью цикла заполнить его значениями 0 3 6 9 12 15 18 21");
+        System.out.println();
+        int [] array2=new int[8];
+        for (int i=0, j=0; i<array2.length; i++, j+=3){
+            System.out.print((array2[i]=j)+" ");
+        }
+        System.out.println();
+    }
+
+    void doTask3(){
+        System.out.println();
+        System.out.println("3. Задать массив [ 1, 5, 3, 2, 11, 4, 5, 2, 4, 8, 9, 1 ] пройти по нему циклом, и числа меньшие 6 умножить на 2");
+        int [] array3= {1, 5, 3, 2, 11, 4, 5, 2, 4, 8, 9, 1};
+        for (int i: array3){
+            System.out.print(i+" ");
+        }
+        System.out.println();
+        for (int i:array3){
+            if (i<6) {
+                i *= 2;
+            }
+            System.out.print(i+" ");
+        }
+        System.out.println();
+    }
+
+    void doTask4(){
+        System.out.println();
+        System.out.println("4. Создать квадратный двумерный целочисленный массив, с помощью циклов заполнить его диагональные элементы единицами");
+        int [][]array4=new int [5][5];
+        for (int i=0, k=array4.length-1;i<array4.length;i++,k--) {
+            System.out.println();
+            for (int j = 0; j < array4.length; j++) {
+                array4[i][i]=1;
+                array4[i][k]=1;
+                System.out.print(array4[i][j] + " ");
+            }
+        }
+        System.out.println();
+    }
+
+    void doTask5() {
+        System.out.println();
+        System.out.println("5. ** Задать одномерный массив и найти в нем минимальный и максимальный элементы");
+        System.out.println();
+        int [] array5={6,7,4,2,7,5,3,4,15,9,-5,-3,0,-10};
+        int min=array5[1];
+        int max=array5[1];
+        for (int i:array5){
+            System.out.print(i+" ");
+            if (i>max){
+                max=i;
+            }
+            if (i<min){
+                min=i;
+            }
+        }
+        System.out.println();
+        System.out.println("Minimum array element = "+min);
+        System.out.println("Maximum array element = "+max);
+    }
+
+    void doTask6() {
+        System.out.println();
+        System.out.println("6. ** Написать метод, в который передается не пустой одномерный целочисленный массив,");
+        System.out.println("метод должен вернуть true, если в массиве есть место, в котором сумма левой и правой части массива равны.");
+        System.out.println();
+        Main cB = new Main();
+        int [] array6={5,2,3,1,2,1};
+        System.out.println(cB.checkBalance(array6));
+    }
+
+    boolean checkBalance(int[] array6) {
+        int totalSum = 0;
+        int selectedSum = 0;
+        boolean c=false;
+        for (int i: array6) {
+            System.out.print(i+" ");
+            totalSum += i;
+        }
+        System.out.println();
+        for (int i: array6) {
+            selectedSum += i;
+            if ((totalSum - selectedSum) == selectedSum){
+                System.out.println((totalSum - selectedSum)+" || "+selectedSum);
+                c=true;
+                break;
+            }
+        }
+        return c;
+    }
+
+    void doTask7() {
+        System.out.println();
+        System.out.println("7. **** Написать метод, которому на вход подается одномерный массив и число n (может быть положительным,");
+        System.out.println(" или отрицательным), при этом метод должен сместить все элементы массива на n позиций.");
+        System.out.println();
+        Main cB = new Main();
+        int [] array7={1,2,3,4,5};
+        int n=2;
+        for (int i:array7) {
+            System.out.print(i + " ");
+        }
+        array7=cB.shiftArray(array7,n);
+        System.out.println();
+        for (int i:array7) {
+            System.out.print(i + " ");
+        }
+        System.out.println();
+    }
+
+    int[] shiftArray(int []array7, int n) {
+        for (int j = 0; j < Math.abs(n); j++) {
+            if (n < 0) {
+                int m = array7[0];
+                for (int i = 0; i < array7.length - 1; i++) {
+                    array7[i] = array7[i + 1];
+                }
+                array7[array7.length - 1] = m;
+            } else {
+                int m = array7[array7.length - 1];
+                for (int i = array7.length - 1; i > 0; i--) {
+                    array7[i] = array7[i - 1];
+                }
+                array7[0] = m;
+            }
+        }
+        return array7;
+    }
+}
