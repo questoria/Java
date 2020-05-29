@@ -1,0 +1,297 @@
+package com.company;
+
+import java.util.Random;
+import java.util.Scanner;
+
+public class Main {
+    static Scanner scanner = new Scanner(System.in);
+    static Random random = new Random();
+    static int signToWin;
+    static int[][] winCombinations;
+    static int maxO;
+    static int maxX;
+    static int[][] winSign;
+    static char[][] field;
+    static int sizeField;
+    final static char aiSign = 'O';
+    final static char humanSign = 'X';
+    final static char emptySign = '-';
+
+    //выбор режима игры
+    static void choiceGame() {
+        System.out.println();
+        System.out.println("Выберите режим игры:");
+        System.out.println();
+        System.out.println("1 - Игровое поле 3x3");
+        System.out.println("2 - Игровое поле 5x5");
+        System.out.println();
+        switch (scanner.nextInt()) {
+            case 1:
+                sizeField = 3;
+                signToWin = 3;
+                initWin(sizeField);
+                System.out.println("Игра 3х3");
+                System.out.println();
+                startGame();
+                break;
+            case 2:
+                sizeField = 5;
+                signToWin = 4;
+                initWin(sizeField);
+                System.out.println("Игра 5х5");
+                System.out.println();
+                startGame();
+                break;
+            default:
+                System.out.println("Вы ввели неверную команду!");
+                choiceGame();
+        }
+    }
+
+    // старт игры
+    static void startGame() {
+        field = new char[sizeField][sizeField];
+        initField();
+        printField();
+        moveHuman();
+    }
+
+    //инициализация игрового поля
+    static void initField() {
+        for (int i = 0; i < sizeField; i++) {
+            for (int j = 0; j < sizeField; j++) {
+                field[i][j] = emptySign;
+            }
+        }
+    }
+
+    //инициализация комбинаций победы
+    static void initWin(int n) {
+        if(n==3) {
+            winCombinations = new int[][]{
+                    {0, 0, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 1, 0, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 2, 0, 2, 1, 2, 2, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 1, 1, 1, 2, 1, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 2, 1, 2, 2, 2, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 2, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0}};
+        }
+        else {
+            winCombinations = new int[][]{
+                    {0, 0, 0, 0, 0, 0, 1, 0, 2, 0, 3, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 0, 0, 0},
+                    {0, 0, 0, 1, 0, 1, 1, 1, 2, 1, 3, 0, 0, 0, 0},
+                    {0, 0, 0, 1, 1, 1, 2, 1, 3, 1, 4, 0, 0, 0, 0},
+                    {0, 0, 0, 2, 0, 2, 1, 2, 2, 2, 3, 0, 0, 0, 0},
+                    {0, 0, 0, 2, 1, 2, 2, 2, 3, 2, 4, 0, 0, 0, 0},
+                    {0, 0, 0, 3, 0, 3, 1, 3, 2, 3, 3, 0, 0, 0, 0},
+                    {0, 0, 0, 3, 1, 3, 2, 3, 3, 3, 4, 0, 0, 0, 0},
+                    {0, 0, 0, 4, 0, 4, 1, 4, 2, 4, 3, 0, 0, 0, 0},
+                    {0, 0, 0, 4, 1, 4, 2, 4, 3, 4, 4, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 1, 0, 2, 0, 3, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 1, 1, 1, 2, 1, 3, 1, 0, 0, 0, 0},
+                    {0, 0, 0, 1, 1, 2, 1, 3, 1, 4, 1, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 2, 1, 2, 2, 2, 3, 2, 0, 0, 0, 0},
+                    {0, 0, 0, 1, 2, 2, 2, 3, 2, 4, 2, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 3, 1, 3, 2, 3, 3, 3, 0, 0, 0, 0},
+                    {0, 0, 0, 1, 3, 2, 3, 3, 3, 4, 3, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 4, 1, 4, 2, 4, 3, 4, 0, 0, 0, 0},
+                    {0, 0, 0, 1, 4, 2, 4, 3, 4, 4, 4, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 0, 0, 0, 0},
+                    {0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 0, 0, 0, 0},
+                    {0, 0, 0, 1, 0, 2, 1, 3, 2, 4, 3, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 3, 1, 2, 2, 1, 3, 1, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 4, 1, 3, 2, 2, 3, 1, 0, 0, 0, 0},
+                    {0, 0, 0, 1, 3, 2, 2, 3, 1, 4, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 1, 4, 2, 3, 3, 2, 4, 1, 0, 0, 0, 0}};
+        }
+    }
+
+    //рисование поля
+    static void printField() {
+        for (int i = 0; i < sizeField; i++) {
+            for (int j = 0; j < sizeField; j++) {
+                System.out.print(field[i][j]);
+            }
+            System.out.println();
+        }
+    }
+
+    // очистка значений массива
+    static void cleanerWinCombinations() {
+        for (int i = 0; i < winCombinations.length; i++) {
+            for (int j = 0; j < 3; j++)
+                winCombinations[i][j] = 0;
+        }
+        maxO = 0;
+        maxX = 0;
+    }
+
+    // ход игрока
+    static void moveHuman() {
+        System.out.println();
+        System.out.println("Ваш ход...");
+        int x;
+        int y;
+        do {
+            System.out.println("Введите значение X от 1 до " + field.length);
+            x = scanner.nextInt() - 1;
+            System.out.println("Введите значение Y от 1 до " + field.length);
+            y = scanner.nextInt() - 1;
+            if (checkingMove(x, y)) {
+                System.out.println("Указана недопустимая ячейка");
+            }
+        }
+        while (checkingMove(x, y));
+        field[x][y] = humanSign;
+        printField();
+        fillingInTheGameArray();
+        checkingVictory(maxX,"Вы выиграли!");
+        checkingDraw(maxO, maxX);
+        moveAi();
+    }
+
+    // ход компьютера
+    static void moveAi() {
+        fillingInTheGameArray();
+        int m;
+        int max;
+        System.out.println();
+        System.out.println("Ход компьютера...");
+        if (maxO >= maxX){
+            m=1;
+            max=maxO;
+        }
+        else {
+            m=2;
+            max=maxX;
+        }
+        int lengthZ = determineTheNumberOfAiMoves(m,max);
+        int k=fillingInPossibleAIMoves(m, max, lengthZ);
+        int r=k!=0?random.nextInt(k):0;
+        field[winSign[r][0]][winSign[r][1]]=aiSign;
+        int x=winSign[r][0] + 1;
+        int y =winSign[r][1]+ 1;
+        System.out.println("Компьютер сходил X = " + x + " ; Y = " + y);
+        printField();
+        fillingInTheGameArray();
+        checkingVictory(maxO,"Компьютер выиграл!");
+        checkingDraw(maxO, maxX);
+        moveHuman();
+    }
+
+
+    //заполнение массива игры
+    static void fillingInTheGameArray() {
+        cleanerWinCombinations();
+        int maxZ = 0;
+        for (int i = 0; i < winCombinations.length; i++) {
+            for (int j = 11, k = 3; j < signToWin + 11; j++, k += 2) {
+                if (field[winCombinations[i][k]][winCombinations[i][k + 1]] == aiSign) {
+                    winCombinations[i][j] = 6;
+                    winCombinations[i][1] += 1;
+                }
+                if (field[winCombinations[i][k]][winCombinations[i][k + 1]] == humanSign) {
+                    winCombinations[i][j] = 9;
+                    winCombinations[i][2] += 1;
+                }
+                if (field[winCombinations[i][k]][winCombinations[i][k + 1]] == emptySign) {
+                    winCombinations[i][j] = 5;
+                    winCombinations[i][0] += 1;
+                }
+            }
+            if (winCombinations[i][1] > 0 && winCombinations[i][2] > 0) {
+                winCombinations[i][1] = 0;
+                winCombinations[i][2] = 0;
+            }
+
+            if (maxZ <= winCombinations[i][0]) {
+                maxZ = winCombinations[i][0];
+            }
+            if (maxO <= winCombinations[i][1]) {
+                maxO = winCombinations[i][1];
+            }
+            if (maxX <= winCombinations[i][2]) {
+                maxX = winCombinations[i][2];
+            }
+        }
+    }
+
+    //проверка возможности сделать ход Human
+    static boolean checkingMove(int x, int y) {
+        if (x >= 0 && x < sizeField && y >= 0 && y < sizeField) {
+            return field[x][y] != emptySign;
+        }
+        return false;
+    }
+
+    //заполнение массива возможных ходов Ai
+    static int fillingInPossibleAIMoves(int m, int max, int lengthZ){
+        winSign=new int[lengthZ][2];
+        int k = -1;
+        for (int i = 0; i < winCombinations.length; i++) {
+            for (int j = 11, t=3; j < 15; j++, t+=2) {
+                if (winCombinations[i][m] == max && winCombinations[i][j] == 5) {
+                    k++;
+                    winSign[k][0] = winCombinations[i][t];
+                    winSign[k][1] = winCombinations[i][t + 1];
+                }
+            }
+        }
+        return k;
+    }
+
+    //определение количества ходов Ai
+    static int determineTheNumberOfAiMoves(int m, int max){
+        int lengthZ=0;
+        for (int i = 0; i < winCombinations.length; i++) {
+            if (winCombinations[i][m] == max) {
+                lengthZ+=winCombinations[i][0];
+            }
+        }
+        return  lengthZ;
+    }
+
+    // проверка победы
+    static void checkingVictory(int max, String s) {
+        if (max == signToWin) {
+            System.out.println(s);
+            endGame();
+        }
+    }
+
+    //проверка ничьи
+    static void checkingDraw(int maxO, int maxX) {
+       if (maxO+maxX==0){
+            System.out.println("Ничья!");
+            endGame();
+        }
+    }
+
+    //конец игры
+    static void endGame() {
+        System.out.println("1 - Сыграть ещё раз, 0 - Выйти");
+        switch (scanner.nextInt()) {
+            case 0:
+                System.out.println("Спасибо за игру!");
+                scanner.close();
+                System.exit(0);
+                break;
+            case 1:
+                choiceGame();
+                break;
+            default:
+                System.out.println("Введите корректную команду");
+                endGame();
+                break;
+        }
+    }
+
+    public static void main(String[] args) {
+        choiceGame();
+    }
+}
