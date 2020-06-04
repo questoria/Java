@@ -1,0 +1,182 @@
+package com.company;
+
+import java.util.Scanner;
+
+public class Main {
+    static Scanner scanner = new Scanner(System.in);
+    static Animal[] animals;
+    static int name;
+    static float distance;
+
+    public static void main(String[] args) {
+        Cat c1 = new Cat("Барсик", 158, 0, 1.8f);
+        Cat c2 = new Cat("Мурзик", 198, 0, 1.6f);
+        Cat c3 = new Cat("Васька", 100, 0, 1.9f);
+        Dog d1 = new Dog("Бобик", 500, 10, 0.5f);
+        Dog d2 = new Dog("Шарик", 465, 5, 0.3f);
+        Dog d3 = new Dog("Джим", 420, 8, 0.4f);
+        animals = new Animal[]{c1, c2, c3, d1, d2, d3};
+        System.out.println("Добро пожаловать в наш питомник!");
+        choiceAnimal();
+        choiceAction();
+        scanner.close();
+    }
+
+    static void choiceAnimal() {
+        System.out.println("Какое животное желаете выбрать?");
+        for (int i = 0; i < animals.length; i++) {
+            if (animals[i] instanceof Cat) {
+                System.out.println(i + 1 + ") кот " + animals[i].nameAnimal);
+            } else {
+                System.out.println(i + 1 + ") собака " + animals[i].nameAnimal);
+            }
+        }
+        do {
+            System.out.println("Введите число от 1 до " + animals.length);
+            name = scanner.nextInt() - 1;
+        }
+        while (name >= animals.length || name < -1);
+        System.out.println("Вы выбрали " + animals[name].nameAnimal);
+    }
+
+    static void choiceAction() {
+        System.out.println("Выберите действие");
+        System.out.println("1) бежать");
+        System.out.println("2) плыть");
+        System.out.println("3) прыгать");
+        System.out.println("4) Вернуться к выбору животного");
+        switch (scanner.nextInt()) {
+            case 1:
+                System.out.println("Введите расстояние, которое должен пробежать " + animals[name].nameAnimal);
+                distance = scanFloat();
+                System.out.println(animals[name].run(distance));
+                break;
+            case 2:
+                if (animals[name] instanceof Cat) {
+                    System.out.println("Очень жаль, но наши кошки не умеют плавать!");
+                    choiceAction();
+                } else {
+                    System.out.println("Введите расстояние, которое должен проплыть " + animals[name].nameAnimal);
+                    distance = scanFloat();
+                    System.out.println(animals[name].swim(distance));
+                }
+                break;
+            case 3:
+                System.out.println("Введите высоту препятствия, которое должен прыгнуть " + animals[name].nameAnimal);
+                distance = scanFloat();
+                System.out.println(animals[name].jump(distance));
+                break;
+            case 4:
+                choiceAnimal();
+                break;
+            default:
+                System.out.println("Вы ввели некорректную команду!");
+                choiceAction();
+                break;
+        }
+        System.out.println("----------------------------------------------------");
+        choiceAction();
+    }
+
+    static float scanFloat() {
+        while (!scanner.hasNextFloat()){
+            System.out.println("Вы ввели некорректное число. Попробуйте снова!");
+            scanner.next();
+        }
+        return scanner.nextFloat();
+    }
+}
+
+abstract class Animal extends Main {
+    String nameAnimal;
+    protected float distanceRun;
+    protected float heightJump;
+    protected float distanceSwim;
+
+     public Animal(String nameAnimal, float distanceRun, float distanceSwim, float heightJump) {
+         this.nameAnimal=nameAnimal;
+         this.distanceRun=distanceRun;
+         this.distanceSwim=distanceSwim;
+         this.heightJump=heightJump;
+     }
+    public abstract boolean run(float distance);
+    public abstract boolean swim(float distance);
+    public abstract boolean jump(float distance);
+}
+
+class Cat extends Animal{
+    private final float distanceRunMax=200f;
+    private final float heightJumpMax=2f;
+    public Cat(String nameAnimal, float distanceRun, float distanceSwim, float heightJump) {
+        super(nameAnimal, distanceRun, distanceSwim, heightJump);
+    }
+    @Override
+    public boolean run(float distance) {
+        System.out.println(nameAnimal + " может пробежать "+distanceRun+ "m");
+        if (distance <= distanceRunMax && distance<=distanceRun) {
+            System.out.println(nameAnimal + " благополучно пробежит");
+            return true;
+        } else {
+            System.out.println(nameAnimal + " не справится с такой дистанцией");
+            return false;
+
+        }
+    }
+    @Override
+    public boolean swim(float distance) {
+        return false;
+    }
+    @Override
+    public boolean jump(float distance) {
+        System.out.println(nameAnimal + " может перепрыгнуть " + heightJump + "m");
+        if (distance <= heightJumpMax && distance<=heightJump) {
+            System.out.println(nameAnimal + " благополучно перепрыгнет");
+            return true;
+        } else {
+            System.out.println(nameAnimal + " не перепрыгнет такое препятствие");
+            return false;
+        }
+    }
+}
+
+class Dog extends Animal{
+    private final float distanceRunMax=500f;
+    private final float distanceSwimMax=10f;
+    private final float heightJumpMax=0.5f;
+    public Dog(String nameAnimal, float distanceRun, float distanceSwim, float heightJump) {
+        super(nameAnimal, distanceRun, distanceSwim, heightJump);
+    }
+    @Override
+    public boolean run(float distance){
+        System.out.println(nameAnimal + " может пробежать " + distanceRun+ "m");
+        if (distance <= distanceRunMax && distance<=distanceRun) {
+            System.out.println(nameAnimal + " благополучно пробежит");
+            return true;
+        } else {
+            System.out.println(nameAnimal + " не справится с такой дистанцией");
+            return false;
+        }
+    }
+    @Override
+    public boolean swim(float distance) {
+        System.out.println(nameAnimal + " может проплыть " + distanceSwim+ "m");
+        if (distance <= distanceSwimMax && distance<=distanceSwim) {
+            System.out.println(nameAnimal + " благополучно проплывёт");
+            return true;
+        } else {
+            System.out.println(nameAnimal + " так далеко не заплывёт");
+            return false;
+        }
+    }
+    @Override
+    public boolean jump(float distance) {
+        System.out.println(nameAnimal + " может перепрыгнуть " + heightJump+ "m");
+        if (distance <= heightJumpMax && distance<=heightJump) {
+            System.out.println(nameAnimal + " благополучно перепрыгнет");
+            return true;
+        } else {
+            System.out.println(nameAnimal + " не перепрыгнет такое препятствие");
+            return false;
+        }
+    }
+}
