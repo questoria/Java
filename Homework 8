@@ -1,0 +1,120 @@
+package com.company;
+
+public class Main {
+
+    public static void main(String[] args) {
+	    new Window();
+    }
+}
+
+package com.company;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class Window extends JFrame {
+
+    private final int winWidth = 300;
+    private final int winHeight = 400;
+    private final int winPositionX = 420;
+    private final int winPositionY = 100;
+    private String lastOperation = "=";
+    private double result = 0;
+    private JPanel panelBottom;
+    private JButton outputField;
+    private boolean start = true;
+
+    ActionListener buttonNumber = new NumberAction();
+    ActionListener buttonOperation = new OperationAction();
+
+    Window() {
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setBounds(winPositionX, winPositionY, winWidth, winHeight);
+        setResizable(false);
+        setTitle("Калькулятор");
+        setVisible(true);
+
+        Font bigFont = new Font("TimesRoman", Font.BOLD, 30);
+        outputField = new JButton("0");
+        outputField.setFont(bigFont);
+        outputField.setEnabled(false);
+
+        panelBottom = new JPanel(new GridLayout(4, 4));
+
+        addButton('7', buttonNumber);
+        addButton('8', buttonNumber);
+        addButton('9', buttonNumber);
+        addButton('/', buttonOperation);
+        addButton('4', buttonNumber);
+        addButton('5', buttonNumber);
+        addButton('6', buttonNumber);
+        addButton('x', buttonOperation);
+        addButton('1', buttonNumber);
+        addButton('2', buttonNumber);
+        addButton('3', buttonNumber);
+        addButton('-', buttonOperation);
+        addButton('.', buttonNumber);
+        addButton('0', buttonNumber);
+        addButton('=', buttonOperation);
+        addButton('+', buttonOperation);
+
+        add(outputField, BorderLayout.NORTH);
+        add(panelBottom, BorderLayout.CENTER);
+    }
+
+    private void addButton(char label, ActionListener listener) {
+        JButton button = new JButton(String.valueOf(label));
+        button.addActionListener(listener);
+        panelBottom.add(button);
+    }
+
+    private class NumberAction implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String inputNumber = e.getActionCommand();
+            if (start) {
+                outputField.setText("");
+                start = false;
+            }
+            outputField.setText(outputField.getText() + inputNumber);
+        }
+    }
+
+    private class OperationAction implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String inputOperation = e.getActionCommand();
+            if (start && inputOperation.equals("-")) {
+                outputField.setText(inputOperation);
+                start = false;
+            } else {
+                calculation(Double.parseDouble(outputField.getText()));
+                lastOperation = inputOperation;
+                start = true;
+            }
+        }
+    }
+
+    public void calculation(double a) {
+        switch (lastOperation) {
+            case "/":
+                result = Math.rint((result / a) * 100) / 100;
+                break;
+            case "x":
+                result = Math.rint((result * a) * 100) / 100;
+                break;
+            case "-":
+                result = Math.rint((result - a) * 100) / 100;
+                break;
+            case "+":
+                result = Math.rint((result + a) * 100) / 100;
+                break;
+            case "=":
+                result = a;
+                break;
+        }
+        outputField.setText("" + result);
+    }
+}
