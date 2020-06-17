@@ -1,0 +1,109 @@
+package com.company;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Cat[] cats = new Cat[10];
+        cats[0] = new Cat("Феликс", 7, false);
+        cats[1] = new Cat("Барсик", 10, false);
+        cats[2] = new Cat("Мурка", 12, false);
+        cats[3] = new Cat("Жорик", 5, false);
+        cats[4] = new Cat("Бэтмен", 8, false);
+        cats[5] = new Cat("Каспер", 15, false);
+        cats[6] = new Cat("Дымок", 6, false);
+        cats[7] = new Cat("Мурзик", 9, false);
+        cats[8] = new Cat("Васька", 11, false);
+        cats[9] = new Cat("Снежок", 4, false);
+
+        Plate plate = new Plate(10);
+        plate.addFood(30);
+        plate.info();
+
+        System.out.println("=======================================================");
+
+        int n=0;
+        int f=0;
+
+        for (Cat cat : cats) {
+            if (plate.getFood() - cat.getAppetiteCat() >= 0) {
+                cat.eat(plate);
+                cat.setSatiety(true);
+                n++;
+            } else {
+                cat.setSatiety(false);
+                f+=cat.getAppetiteCat();
+            }
+            System.out.println("кот " + cat.getNameCat() + ", аппетит - " + cat.getAppetiteCat() + " еды, насытился - " + cat.getSatiety());
+            plate.info();
+            System.out.println("----------------------------------------------------");
+        }
+        System.out.println(n+ " котов сытых, ");
+        if (n>0) {
+            System.out.print((cats.length-n) + " котов остались голодными \nЧтобы все коты были сыты, в тарелке не хватает " + (f - plate.getFood()) + " еды");
+        }
+    }
+}
+
+package com.company;
+
+public class Cat {
+
+    private String nameCat;
+    private int appetiteCat;
+    private boolean satiety;
+
+    public String getNameCat(){
+        return nameCat;
+    }
+
+    public int getAppetiteCat(){
+        return appetiteCat;
+    }
+    public void setSatiety (boolean satiety){
+        this.satiety=satiety;
+    }
+
+    public boolean getSatiety(){
+        return satiety;
+    }
+
+    public Cat(String nameCat, int appetiteCat, boolean satiety){
+        this.nameCat=nameCat;
+        this.appetiteCat=appetiteCat;
+        this.satiety=satiety;
+    }
+
+    public void eat(Plate p) {
+        p.decreaseFood(appetiteCat);
+    }
+}
+
+package com.company;
+
+public class Plate {
+    private int food;
+
+    public int getFood() {
+        return food;
+    }
+
+    public Plate(int food) {
+        this.food = food;
+    }
+
+    public void info() {
+        System.out.println("В тарелке: " + food + " еды");
+    }
+
+    public void decreaseFood(int n) {
+        food -= n;
+    }
+
+    public void addFood(int f) {
+        if (f < 0) {
+            System.out.println("Количество еды не может быть отрицательным значением!");
+        } else {
+            food += f;
+        }
+    }
+}
