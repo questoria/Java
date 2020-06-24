@@ -1,0 +1,42 @@
+package com.company;
+
+enum DayOfWeek{
+    MONDAY("понедельник", 8), TUESDAY("вторник", 8), WEDNESDAY("среда", 8), THURSDAY("четверг", 8), FRIDAY("пятница", 8), SATURDAY("суббота", 0), SUNDAY("воскресенье", 0);
+    private String day;
+    private int hours;
+
+    public String getDay() {
+        return day;
+    }
+
+    public int getHours() {
+        return hours;
+    }
+
+    DayOfWeek(String day, int hours) {
+        this.day = day;
+        this.hours = hours;
+    }
+}
+
+public class DayOfWeekMain {
+    public static void main(String[] args) {
+        DayOfWeek today = DayOfWeek.THURSDAY;
+        System.out.println("Сегодня "+ today.getDay());
+        System.out.println("Осталось "+ getWorkingHours(today)+" рабочих часов на этой неделе");
+    }
+
+    private static int getWorkingHours(DayOfWeek day) {
+        int sum = 0;
+        boolean check = false;
+        for (DayOfWeek d : DayOfWeek.values()) {
+            if (day == d) {
+                check = true;
+            }
+            if (check) {
+                sum += d.getHours();
+            }
+        }
+        return sum;
+    }
+}
