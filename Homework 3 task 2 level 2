@@ -1,0 +1,40 @@
+package com.company;
+
+import java.util.HashMap;
+import java.util.HashSet;
+
+public class TelephoneBook {
+    HashMap<String, HashSet<String>> hm;
+
+    public TelephoneBook() {
+        this.hm = new HashMap<>();
+    }
+
+    public void addContact(String name, String number) {
+        HashSet<String> hs = hm.getOrDefault(name, new HashSet<>());
+        hs.add(number);
+        hm.put(name, hs);
+    }
+
+    public void getNumber(String name) {
+        if (hm.containsKey(name)) {
+            System.out.println(hm.get(name));
+        } else {
+            System.out.println("Такого контакта нет!");
+        }
+    }
+
+    public static void main(String[] args) {
+        TelephoneBook tBook = new TelephoneBook();
+
+        tBook.addContact("Иванов", "1111111");
+        tBook.addContact("Петров", "222222");
+        tBook.addContact("Смирнов", "333333");
+        tBook.addContact("Ласточкин", "444444");
+        tBook.addContact("Уткин", "555555");
+        tBook.addContact("Иванов", "666666");
+
+        tBook.getNumber("Иванов");
+        tBook.getNumber("Ласточкин");
+    }
+}
