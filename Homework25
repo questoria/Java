@@ -1,0 +1,54 @@
+package homework.lesson5.array; 
+
+import java.util.Arrays; 
+
+public class Main { 
+static final int size = 10000000; 
+static int threadСount = 2; 
+static final int partSize = size / threadСount; 
+
+
+public static void main(String[] args) { 
+float[] arr = new float[size]; 
+Arrays.fill(arr, 1f); 
+long a = System.currentTimeMillis(); 
+
+for (int i = 0; i < arr.length; i++) { 
+arr[i] = (float) (arr[i] * Math.sin(0.2f + i / 5) * Math.cos(0.2f + i / 5) * Math.cos(0.4f + i / 2)); 
+} 
+
+System.out.println("arr"); 
+System.out.println(System.currentTimeMillis() - a); 
+a = System.currentTimeMillis(); 
+
+float[][] array = new float[threadСount][partSize]; 
+Thread[] threads = new Thread[threadСount]; 
+
+for (int i = 0; i < threadСount; i++) { 
+System.arraycopy(arr, partSize * i, array[i], 0, partSize); 
+int u = i; 
+threads[i] = new Thread(new Runnable() { 
+public void run() { 
+int n = u * partSize; 
+for (int j = 0; j < partSize; j++, n++) { 
+array[u][j] = (float) (array[u][j] * Math.sin(0.2f + n / 5) * Math.cos(0.2f + n / 5) * Math.cos(0.4f + n / 2)); 
+} 
+} 
+}); 
+threads[i].start(); 
+} 
+try { 
+for (int i = 0; i < threadСount; i++) { 
+threads[i].join(); 
+} 
+
+} catch (InterruptedException e) { 
+e.printStackTrace(); 
+} 
+for (int i = 0; i < threadСount; i++) { 
+System.arraycopy(array[i], 0, arr, partSize, partSize); 
+} 
+System.out.println("array "+threadСount+ " threads"); 
+System.out.println(System.currentTimeMillis() - a); 
+} 
+}
